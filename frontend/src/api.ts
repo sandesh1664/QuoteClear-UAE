@@ -1,0 +1,3 @@
+const base=import.meta.env.VITE_API_BASE||'/api';
+export function apiUrl(path:string){return base+path}
+export async function request<T>(path:string,method='GET',data?:unknown):Promise<T>{const form=data instanceof FormData;const response=await fetch(apiUrl(path),{method,credentials:'include',headers:{'X-QuoteClear':'1',...(!form&&data?{'Content-Type':'application/json'}:{})},body:data?(form?data:JSON.stringify(data)):undefined});if(!response.ok){let detail;try{detail=(await response.json()).detail}catch{detail='API unavailable. Start the backend or use the demo.'}throw Error(typeof detail==='string'?detail:Array.isArray(detail)?detail.map((e:{msg:string})=>e.msg).join('; '):'Request failed')}if(response.status===204)return undefined as T;return response.json()}

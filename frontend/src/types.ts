@@ -1,0 +1,14 @@
+export type Flag={code:string;label:string;detail:string;blocks_total:boolean};
+export type Item={id?:string;label:string;kind:'Labour'|'Parts'|'Call-out'|'Transport'|'Other';pricing:'fixed'|'included'|'unknown';amount:string|null;quantity:number;reviewed:boolean;source_page:number|null;source_excerpt:string};
+export type Analysis={known_subtotal:string;additional_tax:string|null;known_total:string;confirmed_total:string|null;flags:Flag[];reviewed_count:number;item_count:number};
+export type Quote={id:string;job_id:string;document_id:string|null;provider:string;reference:string;tax_mode:'included'|'excluded'|'unspecified';tax_rate:string;warranty_days:number|null;completion_days:number|null;valid_until:string;exclusions:string;notes:string;created_at:string;items:Item[];analysis:Analysis;clarification:string};
+export type QuoteInput=Omit<Quote,'id'|'job_id'|'created_at'|'analysis'|'clarification'>;
+export type Candidate={amount:string;excerpt:string;page:number};
+export type SourceDocument={id:string;job_id:string;filename:string;mime:string;sha256:string;size:number;state:'queued'|'processing'|'ready'|'failed'|'ocr_needed';error:string;created_at:string;pages:{page:number;text:string;candidates:Candidate[]}[]};
+export type Expense={id:string;job_id:string;label:string;amount:string;paid_on:string;note:string};
+export type Job={id:string;title:string;category:string;emirate:string;description:string;status:string;selected_quote_id:string|null;created_at:string;quote_count:number;flag_count:number;lowest_confirmed:string|null;actual_total:string};
+export type JobDetail=Job&{quotes:Quote[];documents:SourceDocument[];expenses:Expense[]};
+export type JobInput=Pick<Job,'title'|'category'|'emirate'|'description'|'status'>;
+export type User={id:string;name:string;email:string};
+export const categories=['AC & maintenance','Car repair','Moving','Cleaning','IT services','Other'];
+export const emirates=['Dubai','Abu Dhabi','Sharjah','Ajman','Ras Al Khaimah','Fujairah','Umm Al Quwain'];
